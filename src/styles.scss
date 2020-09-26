@@ -1,0 +1,85 @@
+:root {
+  --grid-spacing: 1vh;
+  --value-font-size: 10vh;
+}
+
+@media screen and (orientation:portrait) {
+  :root {
+    --grid-spacing: 1vw;
+    --value-font-size: 10vw;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FAF8EF;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90vmin;
+  height: 90vmin;
+  background-color: #BBADA0;
+  padding: var(--grid-spacing);
+  border-radius: var(--grid-spacing);
+}
+
+.cell {
+  flex-basis: calc(100% / 4 - var(--grid-spacing) * 2);
+  margin: var(--grid-spacing);
+
+  background-color: #CDC1B4;
+  border-radius: var(--grid-spacing);
+
+  position: relative;
+}
+
+.fill {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  border-radius: var(--grid-spacing);
+  color: #F9F6F2;
+  background-color: #3C3A32;
+}
+
+.value-2 {
+  background-color: #EEE4DA;
+  color: #776E65;
+}
+
+.value-4 {
+  background-color: #EEE4DA;
+  color: #776E65;
+}
+
+.value-8 { background-color: #F2B179; }
+.value-16 { background-color: #F59563; }
+.value-32 { background-color: #F67C5F; }
+.value-64 { background-color: #F65E3B; }
+.value-128 { background-color: #EDCF72; }
+.value-256 { background-color: #EDCC61; }
+.value-512 { background-color: #EDC850; }
+.value-1024 { background-color: #EDC53F; }
+.value-2048 { background-color: #EDC22E; }
+
+.value {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+  font-size: var(--value-font-size);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: bold;
+}
