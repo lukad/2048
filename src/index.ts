@@ -3,7 +3,7 @@
 import 'swiped-events';
 
 const gridDiv = document.getElementById('grid') as HTMLDivElement;
-const cellDivs: HTMLDivElement[] = [];
+const cellDivs = document.querySelectorAll<HTMLDivElement>('.cell');
 const SIZE = 4;
 
 // eslint-disable-next-line no-unused-vars, no-shadow
@@ -82,13 +82,6 @@ class Cell {
         return this.right;
     }
   }
-}
-
-for (let i = 0; i < SIZE * SIZE; i += 1) {
-  const cellDiv = document.createElement('div');
-  cellDiv.classList.add('cell');
-  gridDiv.appendChild(cellDiv);
-  cellDivs.push(cellDiv);
 }
 
 const cells: Cell[] = [];
