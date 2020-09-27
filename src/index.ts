@@ -1,8 +1,10 @@
-/* eslint-disable max-classes-per-file */
-
 import './styles.scss';
 
 import 'swiped-events';
+
+import Cell from './cell';
+import Fill from './fill';
+import Dir from './dir';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -13,84 +15,6 @@ if ('serviceWorker' in navigator) {
 const gridDiv = document.getElementById('grid') as HTMLDivElement;
 const cellDivs = document.querySelectorAll<HTMLDivElement>('.cell');
 const SIZE = 4;
-
-// eslint-disable-next-line no-unused-vars, no-shadow
-enum Dir {
-  // eslint-disable-next-line no-unused-vars
-  Up = 'ArrowUp', Down = 'ArrowDown', Left = 'ArrowLeft', Right = 'ArrowRight',
-}
-
-class Fill {
-  div: HTMLDivElement;
-
-  private val: number;
-  private valueDiv: HTMLDivElement;
-  public wasCombined = false;
-
-  get value(): number { return this.val; }
-
-  set value(value: number) {
-    this.div.classList.remove(`value-${this.value}`);
-    this.div.classList.add(`value-${value}`);
-    this.val = value;
-    this.valueDiv.innerText = value.toString();
-  }
-
-  constructor(value: number) {
-    this.div = document.createElement('div');
-    this.div.classList.add('fill');
-
-    this.valueDiv = document.createElement('div');
-    this.valueDiv.classList.add('value');
-    this.div.appendChild(this.valueDiv);
-
-    this.value = value;
-  }
-}
-
-class Cell {
-  div: HTMLDivElement;
-
-  public up?: Cell;
-  public down?: Cell;
-  public left?: Cell;
-  public right?: Cell;
-
-  private cellFill?: Fill;
-
-  get fill(): Fill | null { return this.cellFill; }
-
-  set fill(fill: Fill | null) {
-    if (!fill) {
-      if (this.div.hasChildNodes()) {
-        this.div.removeChild(this.cellFill.div);
-      }
-      this.cellFill = null;
-      return;
-    }
-    this.cellFill = fill;
-    this.div.appendChild(this.cellFill.div);
-  }
-
-  constructor(cellDiv: HTMLDivElement) {
-    this.div = cellDiv;
-  }
-
-  // eslint-disable-next-line consistent-return
-  neighbor(dir: Dir): Cell | null {
-    // eslint-disable-next-line default-case
-    switch (dir) {
-      case Dir.Up:
-        return this.up;
-      case Dir.Down:
-        return this.down;
-      case Dir.Left:
-        return this.left;
-      case Dir.Right:
-        return this.right;
-    }
-  }
-}
 
 const cells: Cell[] = [];
 
