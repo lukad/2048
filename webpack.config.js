@@ -8,7 +8,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
-const productionPlugins = production ? [new Visualizer(), new WorkboxPlugin.GenerateSW()] : [];
+const productionPlugins = production ? [new WorkboxPlugin.GenerateSW()] : [new Visualizer()];
 
 module.exports = {
   mode: production ? 'production' : 'development',
