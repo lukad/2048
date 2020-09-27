@@ -22,3 +22,4 @@ rules:
     - ignorePackages
     - js: never
       ts: never
+  no-param-reassign: off

@@ -19,6 +19,8 @@ const SIZE = 4;
 
 const cells: Cell[] = [];
 
+type State = [index: number, value: number][];
+
 cellDivs.forEach((cellDiv) => {
   cells.push(new Cell(cellDiv));
 });
@@ -57,14 +59,31 @@ const slideCell = (cell: Cell, dir: Dir): boolean => {
   if (!target) return false;
   if (target === cell) return false;
 
+  const a = cell.div.getBoundingClientRect();
+  const b = target.div.getBoundingClientRect();
+
+  const xOffset = `${a.x - b.x}px`;
+  const yOffset = `${a.y - b.y}px`;
+
   if (target.fill) {
-    // eslint-disable-next-line no-param-reassign
+    target.mergeFill = cell.fill;
     cell.fill = null;
-    target.fill.value *= 2;
+    target.mergeFill.div.style.left = xOffset;
+    target.mergeFill.div.style.top = yOffset;
+    const cleanup = () => {
+      if (!target.mergeFill) return;
+      target.mergeFill = null;
+      target.fill.value *= 2;
+    };
+    target.mergeFill.div.addEventListener('transitionend', cleanup);
+    target.mergeFill.div.addEventListener('transitioncancel', cleanup);
+    target.fill.div.classList.add('merge');
     target.fill.wasCombined = true;
   } else {
     target.fill = cell.fill;
-    // eslint-disable-next-line no-param-reassign
+    target.fill.div.style.left = xOffset;
+    target.fill.div.style.top = yOffset;
+
     cell.fill = null;
   }
 
@@ -90,10 +109,12 @@ const slide = (dir: Dir): boolean => {
 
   cells.forEach((cell) => {
     if (cell.fill) {
-      // eslint-disable-next-line no-param-reassign
       cell.fill.wasCombined = false;
     }
   });
+
+  gridDiv.getClientRects();
+  cells.forEach((cell) => { cell.resetFillPosition(); });
 
   return moved;
 };
@@ -110,7 +131,7 @@ const spawn = (value: number) => {
   const cell = findRandomFreeCell();
   if (!cell) return;
 
-  const fill = new Fill(value);
+  const fill = new Fill(value, true);
   cell.fill = fill;
 };
 
@@ -121,8 +142,6 @@ const randomSpawn = () => {
   const value = rand > 0.8 ? 4 : 2;
   spawn(value);
 };
-
-type State = [index: number, value: number][];
 
 const saveState = () => {
   const state: State = [];
@@ -137,7 +156,7 @@ const loadState = (): boolean => {
   const state: State = JSON.parse(window.localStorage.getItem('state')) as State;
   if (!state) return false;
   state.forEach(([i, value]) => {
-    const fill = new Fill(value);
+    const fill = new Fill(value, true);
     cells[i].fill = fill;
   });
   return true;
@@ -147,8 +166,14 @@ const input = (dir: Dir) => {
   const moved = slide(dir);
   if (moved) {
     randomSpawn();
-    saveState();
   }
+  saveState();
+};
+
+const newGame = () => {
+  cells.forEach((cell) => { cell.fill = null; });
+  spawn(2);
+  saveState();
 };
 
 document.addEventListener('keydown', (event) => {
@@ -178,11 +203,5 @@ gridDiv.addEventListener('swiped', (e) => {
 if (!loadState()) {
   spawn(2);
 }
-
-const newGame = () => {
-  cells.forEach((cell) => { cell.fill = null; });
-  spawn(2);
-  saveState();
-};
 
 newGameButton.addEventListener('click', () => newGame());
