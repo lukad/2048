@@ -197,9 +197,33 @@ const randomSpawn = () => {
   spawn(value);
 };
 
+type State = [index: number, value: number][];
+
+const saveState = () => {
+  const state: State = [];
+  cells.forEach((cell, i) => {
+    if (!cell.fill) return;
+    state.push([i, cell.fill.value]);
+  });
+  window.localStorage.setItem('state', JSON.stringify(state));
+};
+
+const loadState = (): boolean => {
+  const state: State = JSON.parse(window.localStorage.getItem('state')) as State;
+  if (!state) return false;
+  state.forEach(([i, value]) => {
+    const fill = new Fill(value);
+    cells[i].fill = fill;
+  });
+  return true;
+};
+
 const input = (dir: Dir) => {
   const moved = slide(dir);
-  if (moved) randomSpawn();
+  if (moved) {
+    randomSpawn();
+    saveState();
+  }
 };
 
 document.addEventListener('keydown', (event) => {
@@ -226,4 +250,6 @@ gridDiv.addEventListener('swiped', (e) => {
   }
 });
 
-spawn(2);
+if (!loadState()) {
+  spawn(2);
+}
