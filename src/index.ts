@@ -1,6 +1,14 @@
 /* eslint-disable max-classes-per-file */
 
+import './styles.scss';
+
 import 'swiped-events';
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js');
+  });
+}
 
 const gridDiv = document.getElementById('grid') as HTMLDivElement;
 const cellDivs = document.querySelectorAll<HTMLDivElement>('.cell');
