@@ -1,6 +1,9 @@
 :root {
   --grid-spacing: 1vh;
   --value-font-size: 10vh;
+
+  --light-text-color: #F9F6F2;
+  --dark-text-color: #776E65;
 }
 
 @media screen and (orientation:portrait) {
@@ -21,9 +24,33 @@ html, body {
 
 body {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: #FAF8EF;
+  color: var(--light-text-color);
+  font-size: var(--value-font-size);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: bold;
+}
+
+@media screen and (orientation:portrait) {
+  body {
+    flex-direction: column;
+  }
+}
+
+
+.button {
+  border: 0;
+  border-radius: var(--grid-spacing);
+  background-color: #8f7a66;
+  font-size: calc(var(--value-font-size) / 1.5);
+  color: var(--light-text-color);
+  display: block;
+  text-decoration: none;
+  padding: calc(var(--grid-spacing) * 2) calc(var(--grid-spacing) * 4);
+  margin: calc(var(--grid-spacing) * 4);
 }
 
 .grid {
@@ -53,18 +80,17 @@ body {
   display: flex;
 
   border-radius: var(--grid-spacing);
-  color: #F9F6F2;
   background-color: #3C3A32;
 }
 
 .value-2 {
   background-color: #EEE4DA;
-  color: #776E65;
+  color: var(--dark-text-color);
 }
 
 .value-4 {
   background-color: #EEE4DA;
-  color: #776E65;
+  color: var(--dark-text-color);
 }
 
 .value-8 { background-color: #F2B179; }
@@ -81,7 +107,4 @@ body {
   align-self: center;
   text-align: center;
   width: 100%;
-  font-size: var(--value-font-size);
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-weight: bold;
 }

@@ -6,7 +6,7 @@ import Cell from './cell';
 import Fill from './fill';
 import Dir from './dir';
 
-if ('serviceWorker' in navigator) {
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js');
   });
@@ -14,6 +14,7 @@ if ('serviceWorker' in navigator) {
 
 const gridDiv = document.getElementById('grid') as HTMLDivElement;
 const cellDivs = document.querySelectorAll<HTMLDivElement>('.cell');
+const newGameButton = document.getElementById('new-game-button') as HTMLButtonElement;
 const SIZE = 4;
 
 const cells: Cell[] = [];
@@ -177,3 +178,11 @@ gridDiv.addEventListener('swiped', (e) => {
 if (!loadState()) {
   spawn(2);
 }
+
+const newGame = () => {
+  cells.forEach((cell) => { cell.fill = null; });
+  spawn(2);
+  saveState();
+};
+
+newGameButton.addEventListener('click', () => newGame());
